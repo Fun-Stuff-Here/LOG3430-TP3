@@ -88,7 +88,8 @@ class VocabularyCreator:
                         occ_ham_sub_restriction[wd] = 1
                     else:
                         occ_ham_sub_restriction[wd] += 1
-
+                    # Si la fréquence est plus grand ou égal que la fréquence requis, il met le mot et sa fréquence
+                    # dans la liste                    
                     if  occ_ham_sub_restriction[wd] >= create_vocabulary:
                         total_occ_ham_sub += 1
                         occ_ham_sub[wd] = occ_ham_sub_restriction[wd]
@@ -103,7 +104,8 @@ class VocabularyCreator:
                         occ_spam_bod_restriction[wd] = 1
                     else:
                         occ_spam_bod_restriction[wd] += 1
-
+                    # Si la fréquence est plus grand ou égal que la fréquence requis, il met le mot et sa fréquence
+                    # dans la liste
                     if  occ_spam_bod_restriction[wd] >= create_vocabulary:
                         total_occ_spam_bod += 1
                         occ_spam_bod[wd] = occ_spam_bod_restriction[wd]
@@ -115,7 +117,8 @@ class VocabularyCreator:
                         occ_ham_bod_restriction[wd] = 1
                     else:
                         occ_ham_bod_restriction[wd] += 1
-
+                    # Si la fréquence est plus grand ou égal que la fréquence requis, il met le mot et sa fréquence
+                    # dans la liste
                     if  occ_ham_bod_restriction[wd] >= create_vocabulary:
                         total_occ_ham_bod += 1
                         occ_ham_bod[wd] = occ_ham_bod_restriction[wd]
