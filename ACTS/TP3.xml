@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System name="TP3">
+  <Parameters>
+    <Parameter id="0" name="calculDeProbabilite" type="1">
+      <values>
+        <value>multiplication</value>
+        <value>sommeDesLogs</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="1" name="combinaisonDeProbabilite" type="1">
+      <values>
+        <value>somme</value>
+        <value>sommeDesLogs</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="2" name="creationDuVocabulaire" type="0">
+      <values>
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="3" name="nettoyageDuTexte" type="0">
+      <values>
+        <value>0</value>
+        <value>1</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+  </Parameters>
+  <OutputParameters />
+  <Relations />
+  <Constraints />
+  <Testset doi="2">
+    <Testcase TCNo="0">
+      <Value>1</Value>
+      <Value>multiplication</Value>
+      <Value>sommeDesLogs</Value>
+      <Value>1</Value>
+      <Value>1</Value>
+    </Testcase>
+    <Testcase TCNo="1">
+      <Value>2</Value>
+      <Value>sommeDesLogs</Value>
+      <Value>somme</Value>
+      <Value>1</Value>
+      <Value>0</Value>
+    </Testcase>
+    <Testcase TCNo="2">
+      <Value>3</Value>
+      <Value>multiplication</Value>
+      <Value>somme</Value>
+      <Value>2</Value>
+      <Value>1</Value>
+    </Testcase>
+    <Testcase TCNo="3">
+      <Value>4</Value>
+      <Value>sommeDesLogs</Value>
+      <Value>sommeDesLogs</Value>
+      <Value>2</Value>
+      <Value>0</Value>
+    </Testcase>
+    <Testcase TCNo="4">
+      <Value>5</Value>
+      <Value>multiplication</Value>
+      <Value>somme</Value>
+      <Value>3</Value>
+      <Value>0</Value>
+    </Testcase>
+    <Testcase TCNo="5">
+      <Value>6</Value>
+      <Value>sommeDesLogs</Value>
+      <Value>sommeDesLogs</Value>
+      <Value>3</Value>
+      <Value>1</Value>
+    </Testcase>
+    <Testcase TCNo="6">
+      <Value>7</Value>
+      <Value>multiplication</Value>
+      <Value>somme</Value>
+      <Value>4</Value>
+      <Value>0</Value>
+    </Testcase>
+    <Testcase TCNo="7">
+      <Value>8</Value>
+      <Value>sommeDesLogs</Value>
+      <Value>sommeDesLogs</Value>
+      <Value>4</Value>
+      <Value>1</Value>
+    </Testcase>
+  </Testset>
+  <Header>
+    <Value />
+    <Value>CALCULDEPROBABILITE</Value>
+    <Value>COMBINAISONDEPROBABILITE</Value>
+    <Value>CREATIONDUVOCABULAIRE</Value>
+    <Value>NETTOYAGEDUTEXTE</Value>
+  </Header>
+  <Stat-Data>
+    <ExecutionTime>0.0</ExecutionTime>
+    <MaxDomainSize>4</MaxDomainSize>
+    <MinDomainSize>2</MinDomainSize>
+    <TotalNoOfCombination>36</TotalNoOfCombination>
+    <TotalNoOfTests>8</TotalNoOfTests>
+    <Algorithm>IPOG</Algorithm>
+  </Stat-Data>
+</System>
+

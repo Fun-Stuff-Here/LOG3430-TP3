@@ -1,0 +1,23 @@
+# ACTS Test Suite Generation: Mon Mar 07 01:54:22 EST 2022
+#  '*' represents don't care value 
+# Degree of interaction coverage: 3
+# Number of parameters: 4
+# Maximum number of values per parameter: 4
+# Number of configurations: 16
+calculDeProbabilite,combinaisonDeProbabilite,creationDuVocabulaire,nettoyageDuTexte
+multiplication,somme,1,0
+multiplication,sommeDesLogs,1,1
+sommeDesLogs,somme,1,1
+sommeDesLogs,sommeDesLogs,1,0
+multiplication,somme,2,1
+multiplication,sommeDesLogs,2,0
+sommeDesLogs,somme,2,0
+sommeDesLogs,sommeDesLogs,2,1
+multiplication,somme,3,0
+multiplication,sommeDesLogs,3,1
+sommeDesLogs,somme,3,1
+sommeDesLogs,sommeDesLogs,3,0
+multiplication,somme,4,0
+multiplication,sommeDesLogs,4,1
+sommeDesLogs,somme,4,1
+sommeDesLogs,sommeDesLogs,4,0
