@@ -39,11 +39,19 @@ def evaluate(formulaType:FormulaType,clean_text:int):
         if (not (analyzer.is_spam(subject, body,formulaType, clean_text))) and (spam == "true"):
             fn += 1
         total += 1
-    
-    print("")
-    print("\nAccuracy: ", round((tp + tn) / (tp + tn + fp + fn), 2))
-    print("Precision: ", round(tp / (tp + fp), 2))
-    print("Recall: ", round(tp / (tp + fn), 2))
+
+    if (tp + tn + fp + fn) == 0:
+        print("\nAccuracy: infinity")
+    else:
+        print("\nAccuracy: ", round((tp + tn) / (tp + tn + fp + fn), 2))
+    if(tp + fp) == 0:
+        print("Precision: infinity")
+    else :
+        print("Precision: ", round(tp / (tp + fp), 2))
+    if (tp + fn) == 0:
+        print("Recall: infinity")
+    else:
+        print("Recall: ", round(tp / (tp + fn), 2))
     print("")
     return True
 
@@ -71,8 +79,10 @@ if __name__ == "__main__":
         nettoyageDuTexte = row['nettoyageDuTexte']
         print(f"Test Case #{index}: calculDeProbabilite = {calculDeProbabilite}, combinaisonDeProbabilite = {combinaisonDeProbabilite}, creationDuVocabulaire = {creationDuVocabulaire}, nettoyageDuTexte = {nettoyageDuTexte}")
         # run le test case avec les bons parametre
-        run(creationDuVocabulaire, FormulaType(calculDeProbabilite=calculDeProbabilite, combinaisonDeProbabilite=combinaisonDeProbabilite), nettoyageDuTexte)
-
+        try:
+            run(creationDuVocabulaire, FormulaType(calculDeProbabilite=calculDeProbabilite, combinaisonDeProbabilite=combinaisonDeProbabilite), nettoyageDuTexte)
+        except Exception as e:
+            print(e.with_traceback())
 
 
 

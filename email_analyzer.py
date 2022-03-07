@@ -1,5 +1,6 @@
 import json
 import math
+from decimal import Decimal
 
 from text_cleaner import TextCleaning
 
@@ -39,12 +40,12 @@ class EmailAnalyzer:
         
 		# Compute the merged probabilities
 
-        if formulaType.combinaisonDeProbabilite == SOMME:
-            p_spam = 0.6 * p_subject_spam + 0.4 * p_body_spam
-        elif formulaType.combinaisonDeProbabilite == SOMME_DES_LOGS:
-            p_spam =  0.6 * math.log(p_subject_spam) + 0.4 * math.log(p_body_spam)
+		if formulaType.combinaisonDeProbabilite == SOMME:
+			p_spam = Decimal(0.6) * p_subject_spam + Decimal(0.4) * p_body_spam
+		elif formulaType.combinaisonDeProbabilite == SOMME_DES_LOGS:
+			p_spam =  Decimal(0.6) * Decimal.log10(Decimal(p_subject_spam)) + Decimal(0.4) * Decimal.log10(Decimal(p_body_spam))
 
-        p_ham = 0.5 * (p_subject_ham + p_body_ham)
+		p_ham = Decimal(0.5) * (p_subject_ham + p_body_ham)
 
 		# Decide is the email is spam or ham
 		if p_spam > p_ham:
@@ -61,32 +62,8 @@ class EmailAnalyzer:
         Sortie: probabilite que email body est spam, probabilite
         que email body est ham.
         '''
-		p_spam = 1.0
-		p_ham = 1.0
 
-		voc_data = self.load_dict()
-
-		# Parse the text to compute the probability
-		for word in body:
-			# Check the spam probability
-			if word in voc_data["p_body_spam"]:
-                if formulaType.calculDeProbabilite == MULTIPLICATION:
-				    p_spam *= voc_data["p_body_spam"][word]
-                elif formulaType.calculDeProbabilite == SOMME_DES_LOGS:
-				    p_spam += math.log(voc_data["p_body_spam"][word])
-			else:
-				p_spam *= 1.0 / (len(voc_data["p_body_spam"]) + 1.0)
-
-			# Check the ham probability
-			if word in voc_data["p_body_ham"]:
-				p_ham *= voc_data["p_body_ham"][word]
-			else:
-				p_ham *= 1.0 / (len(voc_data["p_body_ham"]) + 1.0)
-
-		p_spam *= 0.5925
-		p_ham *= 0.4075
-
-		return (p_spam, p_ham)
+		return self.spam_prob(body, "p_body_spam", formulaType)
 
 	def spam_ham_subject_prob(self, subject,formulaType: FormulaType):
 		'''
@@ -95,30 +72,43 @@ class EmailAnalyzer:
         Sortie: probabilite que email subject est spam, probabilite
         que email subject est ham.
         '''
-		p_spam = 1.0
-		p_ham = 1.0
+
+		return self.spam_prob(subject, "p_sub_spam", formulaType)
+
+
+
+	def spam_prob(self, text, dict_key, formulaType: FormulaType):
+		'''
+		Description: fonction pour calculer la probabilite
+		que le text est spam ou ham.
+		Sortie: probabilite que text est spam, probabilite
+		que le text est ham.
+		'''
+		p_spam = Decimal(1.0)
+		p_ham = Decimal(1.0)
 
 		voc_data = self.load_dict()
 
-		# Walk the text to compute the probability
-		for word in subject:
+		# Parse the text to compute the probability
+		for word in text:
 			# Check the spam probability
-			if word in voc_data["p_sub_spam"]:
-                if formulaType.calculDeProbabilite == MULTIPLICATION:
-				    p_spam *= voc_data["p_sub_spam"][word]
-                elif formulaType.calculDeProbabilite == SOMME_DES_LOGS:
-				    p_spam += math.log(voc_data["p_sub_spam"][word])
+			if word in voc_data[dict_key]:
+				if formulaType.calculDeProbabilite == MULTIPLICATION:
+					p_spam *= Decimal(voc_data[dict_key][word])
+				elif formulaType.calculDeProbabilite == SOMME_DES_LOGS:
+					p_spam += Decimal.log10(Decimal(voc_data[dict_key][word]))
 			else:
-				p_spam *= 1.0 / (len(voc_data["p_sub_spam"]) + 1.0)
+				p_spam *= Decimal(1.0) / (Decimal(len(voc_data[dict_key])) + Decimal(1.0))
 
 			# Check the ham probability
-			if word in voc_data["p_sub_ham"]:
-				p_ham *= voc_data["p_sub_ham"][word]
+			if word in voc_data[dict_key]:
+				p_ham *= Decimal(voc_data[dict_key][word])
 			else:
-				p_ham *= 1.0 / (len(voc_data["p_sub_ham"]) + 1.0)
-
-		p_spam *= 0.5925
-		p_ham *= 0.4075
+				p_ham *= Decimal(1.0) / (Decimal(len(voc_data[dict_key])) + Decimal(1.0))
+		if formulaType.calculDeProbabilite == SOMME_DES_LOGS:
+			p_spam = 10**p_spam
+		p_spam *= Decimal(0.5925)
+		p_ham *= Decimal(0.4075)
 
 		return (p_spam, p_ham)
 
