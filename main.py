@@ -1,8 +1,11 @@
 import json
+import pandas as pd
 from vocabulary_creator import VocabularyCreator
 from renege import RENEGE
 from email_analyzer import EmailAnalyzer, FormulaType
 
+INTERACTION_3 = './ACTS/interaction_3.csv'
+INTERACTION_2 = './ACTS/interaction_2.csv'
 
 def evaluate(formulaType:FormulaType,clean_text:int):
     tp = 0
@@ -41,22 +44,35 @@ def evaluate(formulaType:FormulaType,clean_text:int):
     print("\nAccuracy: ", round((tp + tn) / (tp + tn + fp + fn), 2))
     print("Precision: ", round(tp / (tp + fp), 2))
     print("Recall: ", round(tp / (tp + fn), 2))
+    print("")
     return True
 
 
-if __name__ == "__main__":
-    creationDuVocabulaire = 4
-    formulaType = FormulaType(1, 1)
-    clean_text = 0
-
-
+def run(creationDuVocabulaire: int, formulaType: FormulaType, clean_text: int):
     # 1. Creation de vocabulaire.
     vocab = VocabularyCreator()
-    vocab.create_vocab(creationDuVocabulaire,clean_text)
+    vocab.create_vocab(creationDuVocabulaire, clean_text)
 
     # 2. Classification des emails et initialisation des utilisateurs et des groupes.
     renege = RENEGE()
-    renege.classify_emails(formulaType,clean_text)
+    renege.classify_emails(formulaType, clean_text)
 
-    #3. Evaluation de performance du modele avec la fonction evaluate()
+    # 3. Evaluation de performance du modele avec la fonction evaluate()
     evaluate(formulaType, clean_text)
+
+
+if __name__ == "__main__":
+    # utilise pandas pour lire le csv
+    df = pd.read_csv(INTERACTION_3)
+    for index, row in df.iterrows():
+        calculDeProbabilite = row['calculDeProbabilite']
+        combinaisonDeProbabilite = row['combinaisonDeProbabilite']
+        creationDuVocabulaire = row['creationDuVocabulaire']
+        nettoyageDuTexte = row['nettoyageDuTexte']
+        print(f"Test Case #{index}: calculDeProbabilite = {calculDeProbabilite}, combinaisonDeProbabilite = {combinaisonDeProbabilite}, creationDuVocabulaire = {creationDuVocabulaire}, nettoyageDuTexte = {nettoyageDuTexte}")
+        # run le test case avec les bons parametre
+        run(creationDuVocabulaire, FormulaType(calculDeProbabilite=calculDeProbabilite, combinaisonDeProbabilite=combinaisonDeProbabilite), nettoyageDuTexte)
+
+
+
+
