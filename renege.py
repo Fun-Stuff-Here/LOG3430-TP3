@@ -2,7 +2,7 @@
 import json
 import sys
 from crud import CRUD
-from email_analyzer import EmailAnalyzer
+from email_analyzer import EmailAnalyzer, FormulaType
 
 
 class RENEGE:
@@ -15,13 +15,13 @@ class RENEGE:
         self.crud = CRUD()
         self.e_mail = EmailAnalyzer()
 
-    def classify_emails(self):
+    def classify_emails(self,formulaType: FormulaType,clean_text):
         '''
         Description: fonction pour commencer l'analyse des e-mails.
         Sortie: bool, 'True' pour success, 'False' dans le cas de failure.
         '''
         try:
-            self.process_email(self.get_email())
+            self.process_email(self.get_email(),formulaType,clean_text)
             return True
         except Exception as e:
             print("Error!", e.__class__, "occurred.")
@@ -29,7 +29,7 @@ class RENEGE:
             return False
 
 
-    def process_email(self, new_emails):
+    def process_email(self, new_emails,formulaType: FormulaType,clean_text:int):
         '''
         Description: fonction pour analyser chaque nouvel e-mail dans le 
         dictionnaire. Elle gere l'ajout des nouveaux utilisateurs et/ou modification
@@ -50,7 +50,7 @@ class RENEGE:
             name    = data["From"]
             date    = data["Date"]            
             body    = data["Body"]
-            is_spam = self.e_mail.is_spam(subject,body,0)
+            is_spam = self.e_mail.is_spam(subject,body,formulaType,clean_text)
 
             # Get registered data
             user_id = -1
@@ -177,3 +177,4 @@ class RENEGE:
     ###########################################
     #             CUSTOM FUNCTION             #
     ###########################################
+

@@ -24,7 +24,7 @@ class VocabularyCreator:
 
         return proba_dict
 
-    def create_vocab(self,create_vocabulary):
+    def create_vocab(self,create_vocabulary,clean_text:int):
         '''
         Description: fonction pour creer le vocabulaire des mots presents
         dans les e-mails spam et ham et le sauvegarder dans le fichier
@@ -68,7 +68,7 @@ class VocabularyCreator:
                 is_spam     = True
 
             # Analyze the subject 
-            subject = self.cleaning.clean_text(subject)
+            subject = self.cleaning.clean_text(subject,clean_text)
             if is_spam:
                 for wd in subject:
                     # Add the word to the dictionary or update its occurence count
@@ -94,7 +94,7 @@ class VocabularyCreator:
                         occ_ham_sub[wd] = occ_ham_sub_restriction[wd]
 
             # Analyze the body
-            body = self.cleaning.clean_text(body)
+            body = self.cleaning.clean_text(body,clean_text)
             if is_spam:
                 for wd in body:
                     total_occ_spam_bod += 1
@@ -151,5 +151,5 @@ class VocabularyCreator:
         except:
             return False
     
-    def clean_text(self, text):
-        return self.cleaning.clean_text(text)
+    def clean_text(self, text,clean_text:int):
+        return self.cleaning.clean_text(text,clean_text)
