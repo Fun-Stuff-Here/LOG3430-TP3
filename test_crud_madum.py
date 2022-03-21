@@ -61,16 +61,6 @@ class TestCRUD(unittest.TestCase):
         crud = CRUD()
         self.assertEqual(crud.get_groups_data(1, "FauxChamp"), False)
 
-    @patch("crud.CRUD.read_groups_file")
-    def test_get_group_data_Returns_correct_value_if_field_and_id_are_valid(
-            self, mock_read_groups_file
-    ):
-        """
-		Similaire au test_get_user_data_Returns_correct_value_if_field_and_id_are_valid mais pour un groupe
-		"""
-        mock_read_groups_file.return_value = self.groups_data
-        crud = CRUD()
-        self.assertEqual(crud.get_groups_data(2, "name"), self.groups_data["2"]["name"])
 
     @patch("crud.CRUD.read_groups_file")
     def test_innit_crud(
