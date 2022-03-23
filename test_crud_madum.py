@@ -43,20 +43,16 @@ class TestCRUD(unittest.TestCase):
 
     @patch("crud.CRUD.read_groups_file")
     def test_get_group_data_Returns_false_for_invalid_id(self, mock_read_groups_file):
-        """
-		Similaire au test_get_user_data_Returns_false_for_invalid_id mais pour un groupe
-		"""
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
         self.assertEqual(crud.get_groups_data(100, "name"), False)
 
     @patch("crud.CRUD.read_groups_file")
+    @patch("crud.CRUD.read_users_file")
     def test_get_group_data_Returns_false_for_invalid_field(
-            self, mock_read_groups_file
+            self, mock_read_groups_file, mock_read_users_file
     ):
-        """
-		Similaire au test_get_user_data_Returns_false_for_invalid_field mais pour un groupe
-		"""
+        mock_read_users_file.return_value = self.users_data
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
         self.assertEqual(crud.get_groups_data(1, "FauxChamp"), False)
@@ -66,11 +62,86 @@ class TestCRUD(unittest.TestCase):
     def test_innit_crud(
             self, mock_read_groups_file
     ):
-        """
-		Similaire au test_get_user_data_Returns_correct_value_if_field_and_id_are_valid mais pour un groupe
-		"""
         mock_read_groups_file.return_value = self.groups_data
         crud = CRUD()
         self.assertEqual(crud.get_groups_data(2, "name"), self.groups_data["2"]["name"])
 
+    @patch("crud.CRUD.read_users_file")
+    @patch("crud.CRUD.read_groups_file")
+    def test_d19(self, mock_read_groups_file, mock_read_users_file):
+        mock_read_groups_file.return_value = self.groups_data
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        crud.update_groups(0, "Trust", 30)
+        crud.remove_group(0)
+        crud.remove_group_member(0, "alex@gmail.com")
+        crud.add_new_group("newGroups", 20, ["alex@gmail.com"])
+        self.assertEqual(crud.get_groups_data(0, "name"), self.groups_data["0"]["name"])
 
+    @patch("crud.CRUD.read_users_file")
+    @patch("crud.CRUD.read_groups_file")
+    def test_d20(self, mock_read_groups_file, mock_read_users_file):
+        mock_read_groups_file.return_value = self.groups_data
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        crud.update_groups(0, "Trust", 30)
+        crud.remove_group(0)
+        crud.add_new_group("newGroups", 20, ["alex@gmail.com"])
+        crud.remove_group_member(0, "alex@gmail.com")
+        self.assertEqual(crud.get_groups_data(0, "name"), self.groups_data["0"]["name"])
+
+    @patch("crud.CRUD.read_users_file")
+    @patch("crud.CRUD.read_groups_file")
+    def test_d21(self, mock_read_groups_file, mock_read_users_file):
+        mock_read_groups_file.return_value = self.groups_data
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        crud.update_groups(0, "Trust", 30)
+        crud.add_new_group("newGroups", 20, ["alex@gmail.com"])
+        crud.remove_group_member(0, "alex@gmail.com")
+        crud.remove_group(0)
+        self.assertEqual(crud.get_groups_data(0, "name"), False)
+
+    @patch("crud.CRUD.read_users_file")
+    @patch("crud.CRUD.read_groups_file")
+    def test_d22(self, mock_read_groups_file, mock_read_users_file):
+        mock_read_groups_file.return_value = self.groups_data
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        crud.update_groups(0, "Trust", 30)
+        crud.add_new_group("newGroups", 20, ["alex@gmail.com"])
+        crud.remove_group(0)
+        crud.remove_group_member(0, "alex@gmail.com")
+        self.assertEqual(crud.get_groups_data(0, "name"), False)
+
+    @patch("crud.CRUD.read_users_file")
+    @patch("crud.CRUD.read_groups_file")
+    def test_d23(self, mock_read_groups_file, mock_read_users_file):
+        mock_read_groups_file.return_value = self.groups_data
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        crud.update_groups(0, "Trust", 30)
+        crud.remove_group_member(0, "alex@gmail.com")
+        crud.add_new_group("newGroups", 20, ["alex@gmail.com"])
+        crud.remove_group(0)
+        self.assertEqual(crud.get_groups_data(0, "name"), False)
+
+    @patch("crud.CRUD.read_users_file")
+    @patch("crud.CRUD.read_groups_file")
+    def test_d24(self, mock_read_groups_file, mock_read_users_file):
+        mock_read_groups_file.return_value = self.groups_data
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        crud.update_groups(0, "Trust", 30)
+        crud.remove_group_member(0, "alex@gmail.com")
+        crud.remove_group(0)
+        crud.add_new_group("newGroups", 20, ["alex@gmail.com"])
+        self.assertEqual(crud.get_groups_data(0, "name"), self.groups_data["0"]["name"])
+
+    @patch("crud.CRUD.read_users_file")
+    @patch("crud.CRUD.read_groups_file")
+    def test_d25(self, mock_read_groups_file, mock_read_users_file):
+        mock_read_groups_file.return_value = self.groups_data
+        mock_read_users_file.return_value = self.users_data
+        crud = CRUD()
+        self.assertEqual(crud.get_new_group_id(), "0")
